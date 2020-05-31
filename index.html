@@ -1,205 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Shower Presentation Engine</title>
+    <title>Browser Rendering Process</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
     <style>
         .shower {
             --slide-ratio: calc(16 / 9);
+            --color-blue: #20252F;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
         }
     </style>
 </head>
 <body class="shower list">
 
     <header class="caption">
-        <h1>Shower Presentation Engine</h1>
-        <p>Yours Truly, Famous Inc.</p>
+        <h1>How It's Made: Browsers</h1>
+        <p>Kristina Vasilevich</p>
     </header>
 
     <section class="slide" id="cover">
-        <h2>Shower Presentation Engine</h2>
-        <p>Brought to you by <a href="http://pepelsbey.net">Vadim Makeev</a></p>
-        <figure>
-            <img class="cover" src="pictures/cover.jpg" alt="Hands on the orange typewriter in a park">
-            <figcaption class="copyright right white">
-                <a href="http://fiftyfootshadows.net/">© John Carey</a>
-            </figcaption>
-        </figure>
+        <h2>Браузеры</h2>
         <style>
+            #cover {
+                background-image: url(pictures/cover.jpg);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
             #cover h2 {
-                margin: 30px 0 0;
-                color: white;
-                text-align: center;
+                position: absolute;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-20%);
                 font-size: 70px;
-            }
-
-            #cover p {
-                margin: 10px 0 0;
+                color: #ffffff;
                 text-align: center;
-                color: white;
-                font-style: italic;
-                font-size: 20px;
-            }
-
-            #cover p a {
-                color: white;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2>Shower key features</h2>
+        <h2>Содержание</h2>
         <ol>
-            <li>Built on HTML, CSS and JavaScript</li>
-            <li>Works in all modern browsers</li>
-            <li>Themes are separated from engine</li>
-            <li>Fully keyboard accessible</li>
+            <li>Браузер: начало</li>
+            <li>Этапы отображения веб-страницы</li>
+            <li>DOM, CSSOM, Render Tree</li>
+            <li>Repaint и Reflow</li>
             <li>Printable to PDF</li>
         </ol>
-        <p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p>
     </section>
 
     <section class="slide">
-        <h2>Plain text on your slides</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
-    </section>
-
-    <section class="slide">
-        <h2>Two columns if you like</h2>
-        <div class="columns two">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-        </div>
-    </section>
-
-    <section class="slide">
-        <h2>All kind of lists</h2>
-        <ol>
-            <li>Simple lists are marked with bullets</li>
-            <li>Ordered lists begin with a number</li>
-            <li>You can even nest lists one inside another
-                <ul>
-                    <li>Or mix their types</li>
-                    <li>But do not go too far</li>
-                    <li>Otherwise audience will be bored</li>
-                </ul>
-            </li>
-            <li>Look, seven rows exactly!</li>
-        </ol>
-    </section>
-
-    <section class="slide">
-        <h2>Serious citations</h2>
+        <h2>1. Браузер: Начало</h2>
         <figure>
             <blockquote>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+                <p><i>Бра́узер,</i> или <i>веб-обозреватель</i> — прикладное программное обеспечение для просмотра страниц, содержания веб-документов, компьютерных файлов и их каталогов; управления веб-приложениями; а также для решения других задач. В глобальной сети браузеры используют для <b>запроса, обработки, манипулирования и отображения содержания веб-сайтов</b>.</p>
             </blockquote>
-            <figcaption>Marcus Tullius Cicero</figcaption>
+            <figcaption>Wikipedia</figcaption>
         </figure>
+
+    </section>
+
+    <section class="slide" id="slide-4">
+        <img src="/pictures/browser-scheme.jpg" alt="Scheme of browser">
+        <p class="note">Разработчики работают с модулем отображения (Rendering Engine)</p>
+        <style>
+            #slide-4 {
+                padding: 45px 150px;
+                text-align: center;
+            }
+            #slide-4 img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+            #slide-4 p {
+                font-size: 21px;
+                text-align: left;
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="slide-5">
+        <h2>2. Этапы отображения веб-страницы</h2>
+        <img src="/pictures/browser-rendering.png" alt="Scheme of browser rendering process">
+        <style>
+            #slide-5 img {
+                max-width: 100%;
+                margin-top: 50px;
+            }
+        </style>
     </section>
 
     <section class="slide">
-        <h2>Code samples</h2>
-        <pre>
-            <code>&lt;!DOCTYPE html&gt;</code>
-            <code class="mark">&lt;html lang="en"&gt;</code>
-            <code><mark>&lt;head&gt;</mark> <span class="comment">&lt;!--Comment--&gt;</span></code>
-            <code>    &lt;title&gt;Shower&lt;/title&gt;</code>
-            <code>    &lt;meta charset="<mark class="important">UTF-8</mark>"&gt;</code>
-            <code>    &lt;link rel="stylesheet" href="screen.css"&gt;</code>
-            <code><mark>&lt;/head&gt;</mark></code>
-        </pre>
-    </section>
-
-    <section class="slide">
-        <h2>Even tables</h2>
-        <table>
-        <tr>
-            <th scope="col">Locavore</th>
-            <th>Umami</th>
-            <th>Helvetica</th>
-            <th>Vegan</th>
-        </tr>
-        <tr>
-            <th scope="row">Fingerstache</th>
-            <td>Kale</td>
-            <td>Chips</td>
-            <td>Keytar</td>
-        </tr>
-        <tr>
-            <th scope="row">Sriracha</th>
-            <td>Gluten-free</td>
-            <td>Ennui</td>
-            <td>Keffiyeh</td>
-        </tr>
-        <tr>
-            <th scope="row">Thundercats</th>
-            <td>Jean</td>
-            <td>Shorts</td>
-            <td>Biodiesel</td>
-        </tr>
-        <tr>
-            <th scope="row">Terry</th>
-            <td>Richardson</td>
-            <td>Swag</td>
-            <td>Blog</td>
-        </tr>
-        </table>
-        <p>It’s good to have information organized.</p>
-    </section>
-
-    <section class="slide" id="picture">
-        <h2>Pictures</h2>
+        <h2>3. DOM, CSSOM, Render Tree</h2>
         <figure>
-            <img class="cover" src="pictures/picture.jpg" alt="Orange typewriter on a wooden table close-up">
-            <figcaption class="copyright right white">
-                <a href="http://fiftyfootshadows.net/">© John Carey</a>
-            </figcaption>
+            <blockquote>
+                <p>DOM - независящий от платформы и языка программный интерфейс, позволяющий программам и скриптам получить доступ к содержимому HTML-, XHTML- и XML-документов, а также изменять содержимое, структуру и оформление таких документов.</p>
+            </blockquote>
+            <figcaption><a href="https://ru.wikipedia.org/wiki/Document_Object_Model">Wikipedia</a></figcaption>
         </figure>
+    </section>
+
+    <section class="slide" id="slide-7">
+        <h2>Схема построения DOM</h2>
+        <img src="/pictures/dom.png" alt="DOM scheme">
+
         <style>
-            #picture h2 {
-                color: white;
+            #slide-7 {
+                text-align: center;
+            }
+            #slide-7 h2 {
+                text-align: left;
+            }
+            #slide-7 img {
+                max-height: 75%;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2 class="shout shrink">You can even shout this way</h2>
+        <figure>
+            <blockquote>
+                <p>CSS Object Model представляет собой набор API-интерфейсов, позволяющих манипулировать CSS из JavaScript. Это очень похоже на DOM, но для CSS, а не HTML. Это позволяет пользователям динамически читать и изменять стиль CSS.</p>
+            </blockquote>
+            <figcaption><a href="https://developer.mozilla.org/ru/docs/Web/API/CSS_Object_Model" target="_blank">MDN</a></figcaption>
+        </figure>
     </section>
 
-    <section class="slide">
-        <h2>Inner navigation</h2>
-        <ol>
-            <li>Lets you reveal list items one by one</li>
-            <li class="next">To keep some key points</li>
-            <li class="next">In secret from audience</li>
-            <li class="next">But it will work only once</li>
-            <li class="next">Nobody wants to see the same joke twice</li>
-        </ol>
-    </section>
+    <section class="slide" id="slide-9">
+        <h2>Схема построения CSSOM</h2>
+        <img src="/pictures/CSSOM.png" alt="CSSOM scheme">
 
-    <section class="slide" id="see-more">
-        <h2 class="shout">
-            <img src="pictures/logo.svg" alt="Shower logo">
-            <a href="https://github.com/shower/shower">See more on GitHub</a>
-        </h2>
         <style>
-            #see-more h2 {
-                font-size: 100px
+            #slide-9 {
+                text-align: center;
             }
-
-            #see-more img {
-                width: 0.72em;
-                height: 0.72em;
+            #slide-9 h2 {
+                text-align: left;
+            }
+            #slide-9 img {
+                max-height: 75%;
             }
         </style>
     </section>
 
-    <footer class="badge">
-        <a href="https://github.com/shower/shower">Fork me on GitHub</a>
-    </footer>
+    <section class="slide">
+        <figure>
+            <blockquote>
+                <p>Render-Tree - древовидная структура, построенная путем объединения деревьев DOM и CSSOM.</p>
+            </blockquote>
+            <figcaption><a href="https://itnext.io/how-the-browser-renders-a-web-page-dom-cssom-and-rendering-df10531c9969" target="_blank">Medium</a></figcaption>
+        </figure>
+    </section>
+
+    <section class="slide" id="slide-11">
+        <h2>Схема построения Render Tree</h2>
+        <img src="/pictures/render_tree.png" alt="Render Tree scheme">
+
+        <style>
+            #slide-11 {
+                text-align: center;
+            }
+            #slide-11 h2 {
+                text-align: left;
+            }
+            #slide-11 img {
+                max-height: 75%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Разница между DOM и Render Tree</h2>
+        <img src="/pictures/render-tree_dom.jpg" alt="Render Tree and DOM examples">
+    </section>
+
+    <section class="slide" id="slide-13">
+        <h2>Layout</h2>
+        <img src="/pictures/browser-layout-flow.png" alt="Scheme of browser layout flow">
+        <style>
+            #slide-13 img {
+                max-height: 75%;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="slide-14">
+        <h2>Paint</h2>
+        <img src="/pictures/code.png" alt="Markup of component">
+        <img src="/pictures/paint.png" alt="Visualisation of component">
+        <style>
+            #slide-14 {
+                padding: 45px 100px 20px;
+            }
+
+            #slide-14 img {
+                max-height: 39%;
+                display: block;
+                margin: 0 auto;
+            }
+
+            #slide-14 img:first-of-type {
+                margin-bottom: 30px;
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="slide-15">
+        <h2>4. Repaint и Reflow</h2>
+        <section class="columns two">
+            <article>
+                <h3>Repaint</h3>
+                <img src="/pictures/repaint.png" alt="">
+            </article>
+            <article>
+                <h3>Reflow</h3>
+                <button>Hover me</button>
+            </article>
+        </section>
+        <style>
+            #slide-15 h3 {
+                margin: 0;
+            }
+            #slide-15 img {
+                max-height: 345px;
+            }
+            #slide-15 button {
+                margin-top: 30%;
+                padding: 1rem 1.75rem;
+                font-size: 26px;
+                line-height: 1.5;
+                color: #20252F;
+                background-color: transparent;
+                border: 2px solid #20252F;
+                border-radius: 0;
+            }
+            #slide-15 button:hover {
+                color: #376da3;
+                border-color: #376da3;
+                cursor: pointer;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Источники</h2>
+        <ul>
+            <li>
+                <a href="https://habr.com/ru/company/dataart/blog/304138/">Важные аспекты работы браузера для разработчиков.</a>
+            </li>
+            <li>
+                <a href="https://habr.com/ru/post/224187/">Рендеринг WEB-страницы: что об этом должен знать front-end разработчик</a>
+            </li>
+            <li>
+                <a href="https://habr.com/ru/post/484900/">Рендеринг веб сайтов 101</a>
+            </li>
+            <li>
+                <a href="https://codeburst.io/how-browsers-work-6350a4234634">Notes on “How Browsers Work”</a>
+            </li>
+            <li>
+                <a href="https://habr.com/ru/company/yandex/blog/501998/">Дорогая цена стилей. Доклад Яндекса</a>
+            </li>
+            <li>
+                <a href="https://csstriggers.com/">CSS Triggers</a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Спасибо!</h2>
+    </section>
 
     <div class="progress"></div>
 
